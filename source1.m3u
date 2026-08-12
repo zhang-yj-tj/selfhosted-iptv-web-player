@@ -1,0 +1,9 @@
+#EXTM3U
+# Replace every example URL with an HTTP MPEG-TS address provided by your IPTV proxy.
+# 将所有示例地址替换为你的 IPTV 代理所提供的 HTTP MPEG-TS 地址。
+
+#EXTINF:-1,001.示例频道一
+http://iptv-proxy.example:8080/udp/239.0.0.1:1234
+
+#EXTINF:-1,002.示例频道二
+http://iptv-proxy.example:8080/udp/239.0.0.2:1234
