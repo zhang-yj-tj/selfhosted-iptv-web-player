@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#0b0f0d">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <meta name="description" content="A self-hosted web player for HTTP IPTV streams and local M3U playlists.">
+  <title>IPTV 播放器</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="IPTV 播放器首页">
+        <span class="brand-mark">IPTV</span>
+        <span class="brand-copy"><small>LIVE STREAM</small><strong>IPTV 播放器</strong></span>
+      </a>
+      <div class="top-meta">
+        <span id="status" class="status"><i></i><b>正在载入</b></span>
+        <span id="count" class="channel-count">0 个频道</span>
+      </div>
+    </header>
+
+    <div class="workspace">
+      <aside id="sidebar" class="sidebar">
+        <div class="sidebar-title">
+          <div><small>CHANNELS</small><h1>频道列表</h1></div>
+          <button id="closeSidebar" class="icon-button close-sidebar" type="button" aria-label="关闭频道列表">×</button>
+        </div>
+
+        <label class="search-box">
+          <span aria-hidden="true">⌕</span>
+          <input id="search" type="search" placeholder="搜索频道或编号" autocomplete="off" aria-label="搜索频道">
+        </label>
+
+        <div class="source-switch" role="group" aria-label="频道源">
+          <button class="active" type="button" data-source="1" aria-pressed="true">源1</button>
+          <button type="button" data-source="2" aria-pressed="false">源2</button>
+        </div>
+
+        <nav id="groups" class="group-tabs" aria-label="频道分类"></nav>
+        <div id="channels" class="channel-list" aria-live="polite">
+          <p class="empty-state">正在读取频道源…</p>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <section class="player-card" aria-label="直播播放器">
+          <div class="video-stage">
+            <video id="video" playsinline preload="none"></video>
+            <canvas id="freezeFrame" class="freeze-frame" hidden aria-hidden="true"></canvas>
+            <button id="startPlayback" class="start-playback" type="button" onclick="this.hidden=true;this.style.setProperty('display','none','important')">
+              <span class="play-symbol" aria-hidden="true">▶</span>
+              <strong>开始播放</strong>
+              <small>频道源加载完成后即可播放</small>
+            </button>
+            <div id="loading" class="loading-layer" aria-live="polite">
+              <i></i><span>正在连接直播信号</span>
+            </div>
+            <div class="player-tools" aria-label="视频播放控制">
+              <button id="playPauseToggle" class="player-tool-button icon-only" type="button" aria-label="暂停直播" title="暂停直播">
+                <span class="tool-icon play-pause-icon" aria-hidden="true">Ⅱ</span>
+              </button>
+              <button id="muteToggle" class="player-tool-button icon-only" type="button" aria-label="静音" title="静音">
+                <span class="tool-icon" aria-hidden="true">🔊</span>
+              </button>
+              <label class="volume-tool" title="调整音量">
+                <span class="volume-label">音量</span>
+                <input id="volumeSlider" type="range" min="0" max="1" step="0.05" value="1" aria-label="音量">
+              </label>
+              <span class="tool-spacer" aria-hidden="true"></span>
+              <button id="pipToggle" class="player-tool-button" type="button" aria-label="画中画播放" title="画中画播放">
+                <span class="tool-icon pip-icon" aria-hidden="true">▣</span><span class="tool-label">画中画</span>
+              </button>
+              <button id="fullscreenToggle" class="player-tool-button" type="button" aria-label="全屏播放" title="全屏播放">
+                <span class="tool-icon fullscreen-icon" aria-hidden="true">⛶</span><span class="tool-label">全屏</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="now-playing">
+            <span id="nowNumber" class="now-number">---</span>
+            <div class="now-copy">
+              <small>NOW PLAYING</small>
+              <h2 id="nowName">尚未选择频道</h2>
+              <p id="message">正在准备同源播放服务</p>
+            </div>
+            <button id="openSidebar" class="list-button" type="button">频道列表</button>
+          </div>
+        </section>
+
+        <section class="control-card">
+          <div>
+            <h2>播放控制</h2>
+            <p id="modeDescription">H.264 画面由浏览器硬件解码，MPEG 音轨由内置 WASM 解码器播放。</p>
+          </div>
+          <div class="actions">
+            <button id="reloadSources" type="button">重新载入频道源</button>
+            <button id="retryPlayback" type="button">重新连接</button>
+          </div>
+        </section>
+
+        <div id="errorBox" class="error-box" role="alert"></div>
+        <footer><span>同目录读取 source1.m3u / source2.m3u</span><span id="modeFooter">自建 IPTV 代理 · WASM 音频</span><span>建议使用 Chrome 或 Edge</span></footer>
+      </main>
+    </div>
+  </div>
+
+  <div id="scrim" class="scrim"></div>
+  <script src="vendor/mpegts.min.js"></script>
+  <script src="vendor/mpg123-decoder.min.js" charset="UTF-8"></script>
+  <script src="audio-player.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
