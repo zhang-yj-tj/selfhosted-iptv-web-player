@@ -1,0 +1,9 @@
+#EXTM3U
+# Optional backup source. Replace every example URL before use.
+# 这是备用频道源模板，使用前请替换所有示例地址。
+
+#EXTINF:-1,001.备用示例频道一
+http://backup-iptv-proxy.example:8080/udp/239.0.1.1:1234
+
+#EXTINF:-1,002.备用示例频道二
+http://backup-iptv-proxy.example:8080/udp/239.0.1.2:1234
